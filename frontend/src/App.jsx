@@ -6,7 +6,7 @@
   import Placeorder from './pages/placeorder/Placeorder'
   import Footer1 from './components/footer/Footer1'
   import Loginpopup from './components/loginpopup/Loginpopup'
-
+//Root Component
   const App = () => {
     const[showLogin,setShowLogin]=useState(false)
     return (
