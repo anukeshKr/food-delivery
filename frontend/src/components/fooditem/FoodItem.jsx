@@ -3,8 +3,11 @@ import { assets } from '../../assets/frontend_assets/assets';
 import { StoreContext } from '../context/StoreContext';
 
 const FoodItem = ({ _id, name, price, image, description }) => {
+  
+  
   const { cartItems, addToCart, removeCartItem, url } = useContext(StoreContext);
-
+  
+  // console.log("cartItems in FoodItem:", cartItems);
   return (
     <div className="w-full m-auto rounded hover:shadow-2xl transition-transform duration-200">
       <div className="relative">

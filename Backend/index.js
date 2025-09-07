@@ -7,6 +7,8 @@ import { fileURLToPath } from "url";
 import userRouter from "./routes/useroute.js";
 import 'dotenv/config'
 import cartRouter from "./routes/cartroute.js";
+import orderRouter from "./routes/orderroute.js";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +31,7 @@ app.use("/api/food",foodRouter);
 app.use("/images",express.static(path.join(__dirname, "uploads")))
 app.use("/api/user",userRouter)
 app.use("/api/cart",cartRouter)
+app.use("/api/order",orderRouter)
 
 app.get("/",(req,res)=>{
     res.send("Welcome")
