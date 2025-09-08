@@ -23,7 +23,7 @@ const FoodItem = ({ _id, name, price, image, description }) => {
               src={assets.add_icon_white}
               alt="Add"
               className="w-10 shadow-md round cursor-pointer"
-              onClick={() => {addToCart(_id),console.log('Clicked item id:', _id);}}
+              onClick={() => {addToCart(_id)}}
             />
           ) : (
             <div className="flex items-center gap-2">

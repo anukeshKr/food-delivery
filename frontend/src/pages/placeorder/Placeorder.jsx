@@ -1,5 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StoreContext } from "../../components/context/StoreContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Placeorder = () => {
   const {
@@ -31,8 +33,41 @@ const Placeorder = () => {
 
   const placeorder = async(e)=>{
     e.preventDefault();
-    let orderItems = []
+    let orderItems = [];
+    food_list.map((item)=>{
+      if (cartItems[item._id]>0) {
+        let itemInfo = item;
+        itemInfo["quantity"] = cartItems[item._id];
+        orderItems.push(itemInfo)
+      }
+    })
+    let orderData = {
+      address:data,
+      items:orderItems,
+      amount:getTotalCartAmount()+5
+    }
+    // console.log(orderData);
+    
+    let response = await axios.post(url+"/api/order/place",orderData,{headers:{token}});
+    if(response.data.success){
+      const {session_url} = response.data;
+      window.location.replace(session_url);
+    }
+    else{
+      alert("Error")
+    }
   }
+
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    if (!token) {
+      navigate("/cart")
+    }
+    else if(getTotalCartAmount()===0){
+      navigate("/cart")
+    }
+  },[token])
 
   
   return (
@@ -43,6 +78,7 @@ const Placeorder = () => {
         <p className="font-bold text-3xl mb-3">Delievery Information</p>
         <div className="flex gap-2.5">
           <input
+            required
             type="text"
             placeholder="first name"
             name="firstName"
@@ -51,6 +87,7 @@ const Placeorder = () => {
             className="w-full mb-2 p-2 rounded-md border border-gray-300 outline-none focus:ring-2 focus:ring-orange-300"
           />
           <input
+            required
             type="text"
             placeholder="last name"
             name="lastName"
@@ -60,6 +97,7 @@ const Placeorder = () => {
           />
         </div>
         <input
+          required
           type="email"
           placeholder="Email"
           name="email"
@@ -68,6 +106,7 @@ const Placeorder = () => {
           className="w-full mb-2 p-2 rounded-md border border-gray-300 outline-none focus:ring-2 focus:ring-orange-300"
         />
         <input
+          required
           type="text"
           placeholder="Street"
           name="street"
@@ -77,6 +116,7 @@ const Placeorder = () => {
         />
         <div className="flex gap-2.5">
           <input
+            required
             type="text"
             placeholder="City"
             name="city"
@@ -85,6 +125,7 @@ const Placeorder = () => {
             className="w-full mb-2 p-2 rounded-md border border-gray-300 outline-none focus:ring-2 focus:ring-orange-300"
           />
           <input
+            required
             type="text"
             placeholder="State"
             name="state"
@@ -95,6 +136,7 @@ const Placeorder = () => {
         </div>
         <div className="flex gap-2.5">
           <input
+            required
             type="text"
             placeholder="Zip Code"
             name="zipcode"
@@ -103,6 +145,7 @@ const Placeorder = () => {
             className="w-full mb-2 p-2 rounded-md border border-gray-300 outline-none focus:ring-2 focus:ring-orange-300"
           />
           <input
+            required
             type="text"
             placeholder="Country"
             name="country"
@@ -112,6 +155,7 @@ const Placeorder = () => {
           />
         </div>
         <input
+          required
           type="text"
           placeholder="Phone"
           name="phone"

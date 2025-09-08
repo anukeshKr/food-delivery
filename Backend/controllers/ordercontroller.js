@@ -36,7 +36,7 @@ const placeorder = async(req,res)=>{
                 product_data:{
                     name:"Delivery Charges"
                 },
-                unit_amount:2*100*80
+                unit_amount:2*100
             },
             quantity:1
         })
@@ -44,8 +44,8 @@ const placeorder = async(req,res)=>{
         const session = await stripe.checkout.sessions.create({
             line_items:line_items,
             mode:'payment',
-            success_url:`${frontend_url}/verify?sucess=true&orderId=${newOrder._id}`,
-            cacel_url:`${frontend_url}/verify?sucess=false&orderId=${newOrder._id}`,
+            success_url:`${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
+            cancel_url:`${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
         })
 
         res.json({success:true,session_url:session.url})
@@ -57,5 +57,47 @@ const placeorder = async(req,res)=>{
     }
 }
 
+const verifyOrder = async(req,res)=>{
+    const {orderId,success} = req.body;
+    try {
+        if (success=="true") {
+            await orderModel.findByIdAndUpdate(orderId,{payment:true})
+            res.json({success:true,message:"Paid"})
+        }
+        else{
+            await orderModel.findByIdAndDelete(orderId);
+            res.json({success:false,message:"NOT Paid"})
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({success:false,message:"Error"})
+    }
+}
 
-export {placeorder}
+// user orders for frontend
+
+const userorder = async(req,res)=>{
+    try {
+        const Orders = await orderModel.find({userId:req.body.userId});
+        
+        res.json({success:true,data:Orders})
+    } catch (error) {
+        console.log(error);
+        res.json({success:false,message:"Error"})
+    }
+}
+
+//listing orders for all users
+
+const listOrders = async(req,res)=>{
+    try {
+        const orders = await orderModel.find({});
+        res.json({success:true,data:orders})
+    } catch (error) {
+        console.log(error);
+        res.json({success:false,message:"Error"})
+    }
+}
+
+
+export {placeorder,verifyOrder,userorder,listOrders}

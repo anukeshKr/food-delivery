@@ -75,7 +75,7 @@ const Navbar = ({setShowLogin}) => {
 
         {/* Dropdown Menu */}
         <ul className="absolute hidden group-hover:block right-0  w-40 bg-white shadow-lg rounded-lg z-10">
-            <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-orange-500 cursor-pointer ">
+            <li onClick={()=>{navigate("/myorders")}} className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 hover:text-orange-500 cursor-pointer ">
                 <img src={assets.bag_icon} alt="Orders" className="w-4 h-4 " />
                 <p>Orders</p>
             </li>

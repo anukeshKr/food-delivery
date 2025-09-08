@@ -17,6 +17,7 @@ const __dirname = path.dirname(__filename);
 // app config
 const app = express();
 const Port = 4000;
+// console.log("Stripe Key:", process.env.STRIPE_SECRET_KEY);
 
 
 //middleware
