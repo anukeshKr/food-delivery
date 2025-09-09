@@ -39,7 +39,7 @@ const MyOrders = () => {
                         <p>${order.amount}</p>
                         <p>Items : {order.items.length}</p>
                         <p><span className='text-orange-500'>&#x25cf;</span><b>{order.status}</b></p>
-                        <button className='px-3 py-2 outline-0 bg-orange-200 hover:bg-orange-400 text-black rounded'>Track Order</button>
+                        <button onClick={fetOrders} className='px-3 py-2 outline-0 bg-orange-200 hover:bg-orange-400 text-black rounded'>Track Order</button>
                     </div>
                 )
             })}

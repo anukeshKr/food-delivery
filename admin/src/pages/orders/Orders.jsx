@@ -7,6 +7,7 @@ import { assets } from "../../assets/assets";
 
 const Orders = ({ url }) => {
   const [orders, setOrders] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState(orders.status);
 
   const fetchAllOrders = async () => {
     const resposne = await axios.get(url + "/api/order/list");
@@ -18,6 +19,13 @@ const Orders = ({ url }) => {
       toast.error("Error");
     }
   };
+
+  const statusHandler = async(event,orderId)=>{
+    const response = await axios.post(url+"/api/order/status",{orderId,status:event.target.value});
+    if (response.data.success) {
+      await fetchAllOrders()
+    }
+  }
 
   useEffect(() => {
     fetchAllOrders();
@@ -62,8 +70,8 @@ const Orders = ({ url }) => {
                 <div className="flex items-center gap-2">
                   <p className="text-sm text-gray-500">Status:</p>
                   <select
+                    onChange={(event)=>{statusHandler(event,order._id)}}
                     value={order.status}
-                    onChange={(e) => console.log("New Status:", e.target.value)}
                     className="text-sm border border-gray-300 rounded-lg px-2 py-1 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
                   >
                     <option value="Food Processing">Food Processing</option>
@@ -72,7 +80,7 @@ const Orders = ({ url }) => {
                     <option value="Cancelled">Cancelled</option>
                   </select>
                 </div>
-                <p className="font-bold text-gray-800">₹{order.amount}</p>
+                <p className="font-bold text-gray-800">${order.amount}</p>
               </div>
 
               <p className="text-xs text-gray-400 mt-2">
